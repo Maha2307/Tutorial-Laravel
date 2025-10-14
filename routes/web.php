@@ -5,6 +5,7 @@ use App\Http\Controllers\TodoController;
 
 Route::get('/taken', [TodoController::class, 'index']);
 Route::post('/taken', [TodoController::class, 'store']);
+Route::delete('/taken/{index}', [TodoController::class, 'destroy']); 
 
 
 

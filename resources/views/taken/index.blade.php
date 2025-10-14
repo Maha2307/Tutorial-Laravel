@@ -13,10 +13,17 @@
     </form>
 
     <hr>
-    <ul>
-        @foreach ($taken as $taak)
-            <li>{{ $taak }}</li>
-        @endforeach
-    </ul>
+ <ul>
+    @foreach ($taken as $index => $taak)
+        <li>
+            {{ $taak }}
+            <form action="/taken/{{ $index }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit">Verwijderen</button>
+            </form>
+        </li>
+    @endforeach
+</ul>
 </body>
 </html>

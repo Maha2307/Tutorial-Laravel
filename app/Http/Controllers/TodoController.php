@@ -25,4 +25,17 @@ class TodoController extends Controller
 
       return redirect('/taken');
     }
+
+    public function destroy(Request $request, $index)
+{
+    $taken = $request->session()->get('taken', []);
+    
+    if(isset($taken[$index])) {
+        unset($taken[$index]);  // taak verwijderen
+        $request->session()->put('taken', array_values($taken)); // reset array keys
+    }
+
+    return redirect('/taken');
+}
+
 }
