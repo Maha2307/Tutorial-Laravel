@@ -3,39 +3,54 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Taak;
 
 class TodoController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $taken = $request->session()->get('taken', []);
-
+        $taken = Taak::all();
         return view('taken.index', ['taken' => $taken]);
     }
 
     public function store(Request $request)
     {
-        $nieuweTaak = $request->input('taak');
+        $request->validate([
+            'taak' => 'required|string|max:255',
+        ]);
 
-        $taken = $request->session()->get('taken', []);
+        Taak::create([
+            'naam' => $request->taak,
+        ]);
 
-        $taken[] = $nieuweTaak;
-
-        $request->session()->put('taken', $taken);
-
-      return redirect('/taken');
+        return redirect('/taken');
     }
 
-    public function destroy(Request $request, $index)
-{
-    $taken = $request->session()->get('taken', []);
+    public function destroy($id)
+    {
+        $taak = Taak::findOrFail($id);
+        $taak->delete();
+
+        return redirect('/taken');
+    }
+
     
-    if(isset($taken[$index])) {
-        unset($taken[$index]);  // taak verwijderen
-        $request->session()->put('taken', array_values($taken)); // reset array keys
+    public function edit($id)
+    {
+        $taak = Taak::findOrFail($id);
+        return view('taken.edit', ['taak' => $taak]);
     }
 
-    return redirect('/taken');
-}
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'taak' => 'required|string|max:255',
+        ]);
 
+        $taak = Taak::findOrFail($id);
+        $taak->naam = $request->taak;
+        $taak->save();
+
+        return redirect('/taken');
+    }
 }
