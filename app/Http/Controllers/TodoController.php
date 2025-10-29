@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Taak;
+use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
 {
     public function index()
     {
-        $taken = Taak::all();
+        $taken = Taak::where('user_id', Auth::id())->get();
         return view('taken.index', ['taken' => $taken]);
     }
 
@@ -21,6 +22,7 @@ class TodoController extends Controller
 
         Taak::create([
             'naam' => $request->taak,
+            'user_id' => Auth::id(),
         ]);
 
         return redirect('/taken');
@@ -28,16 +30,15 @@ class TodoController extends Controller
 
     public function destroy($id)
     {
-        $taak = Taak::findOrFail($id);
+        $taak = Taak::where('user_id', Auth::id())->findOrFail($id);
         $taak->delete();
 
         return redirect('/taken');
     }
 
-    
     public function edit($id)
     {
-        $taak = Taak::findOrFail($id);
+        $taak = Taak::where('user_id', Auth::id())->findOrFail($id);
         return view('taken.edit', ['taak' => $taak]);
     }
 
@@ -47,7 +48,7 @@ class TodoController extends Controller
             'taak' => 'required|string|max:255',
         ]);
 
-        $taak = Taak::findOrFail($id);
+        $taak = Taak::where('user_id', Auth::id())->findOrFail($id);
         $taak->naam = $request->taak;
         $taak->save();
 
