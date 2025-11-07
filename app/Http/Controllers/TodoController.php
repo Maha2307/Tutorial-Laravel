@@ -25,7 +25,7 @@ class TodoController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        return redirect('/taken');
+        return redirect()->route('taken.index');
     }
 
     public function destroy($id)
@@ -33,7 +33,7 @@ class TodoController extends Controller
         $taak = Taak::where('user_id', Auth::id())->findOrFail($id);
         $taak->delete();
 
-        return redirect('/taken');
+        return redirect()->route('taken.index');
     }
 
     public function edit($id)
@@ -52,6 +52,6 @@ class TodoController extends Controller
         $taak->naam = $request->taak;
         $taak->save();
 
-        return redirect('/taken');
+        return redirect()->route('taken.index');
     }
 }
