@@ -10,7 +10,7 @@ class TodoController extends Controller
 {
     public function index()
     {
-        $taken = Taak::where('user_id', Auth::id())->get();
+        $taken = Auth::user()->taken()->get();
         return view('taken.index', ['taken' => $taken]);
     }
 
@@ -30,7 +30,7 @@ class TodoController extends Controller
 
     public function destroy($id)
     {
-        $taak = Taak::where('user_id', Auth::id())->findOrFail($id);
+        $taak = Taak::findOrFail($id);
         $taak->delete();
 
         return redirect()->route('taken.index');
@@ -38,7 +38,7 @@ class TodoController extends Controller
 
     public function edit($id)
     {
-        $taak = Taak::where('user_id', Auth::id())->findOrFail($id);
+        $taak = Taak::findOrFail($id);
         return view('taken.edit', ['taak' => $taak]);
     }
 
@@ -48,7 +48,7 @@ class TodoController extends Controller
             'taak' => 'required|string|max:255',
         ]);
 
-        $taak = Taak::where('user_id', Auth::id())->findOrFail($id);
+        $taak = Taak::findOrFail($id);
         $taak->naam = $request->taak;
         $taak->save();
 

@@ -8,7 +8,6 @@
 <body>
     <div class="container">
         <h1>Wijzig Taak</h1>
-
         <form action="{{ route('taken.update', $taak->id) }}" method="POST">
             @csrf
             @method('PUT')

@@ -6,19 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('taaks', function (Blueprint $table) {
-            $table->foreignId('user_id')->after('id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->after('id')->constrained()->cascadeOnDelete();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('taaks', function (Blueprint $table) {

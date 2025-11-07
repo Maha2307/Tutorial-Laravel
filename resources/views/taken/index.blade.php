@@ -18,7 +18,7 @@
         <ul>
             @foreach ($taken as $taak)
                 <li>
-                    <span>{{ $taak->naam }}</span>
+                    {{ $taak->naam }}
                     <div>
                         <a href="{{ route('taken.edit', $taak->id) }}" class="btn">Wijzigen</a>
                         <form action="{{ route('taken.destroy', $taak->id) }}" method="POST" style="display:inline;">
